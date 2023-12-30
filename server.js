@@ -1,66 +1,31 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+import express from "express";
+import mongoose from "mongoose";
+import connectDB from "./config/dbConn.js";
+import cors from "cors";
+import dotenv from "dotenv";
+import todoRoutes from "./routes/todoRoutes.js";
+
+dotenv.config();
+
+//connect database
+connectDB();
 
 const app = express();
 
+//middlewares
 app.use(express.json());
 app.use(cors());
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(console.error);
+// routes
+app.use("/api/v1/todo", todoRoutes);
 
-// Models
-const Todo = require("./models/Todo");
-
-app.get("/todos", async (req, res) => {
-  const todos = await Todo.find();
-
-  res.json(todos);
+app.use("*", (req, res) => {
+  res.json({ message: "404 Not Found" });
 });
 
-app.post("/todo/new", (req, res) => {
-  const todo = new Todo({
-    text: req.body.text,
-  });
+const PORT = process.env.PORT || 3001;
 
-  todo.save();
-
-  res.json(todo);
+mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB");
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });
-
-app.delete("/todo/delete/:id", async (req, res) => {
-  const result = await Todo.findByIdAndDelete(req.params.id);
-
-  res.json({ result });
-});
-
-app.get("/todo/complete/:id", async (req, res) => {
-  const todo = await Todo.findById(req.params.id);
-
-  todo.complete = !todo.complete;
-
-  todo.save();
-
-  res.json(todo);
-});
-
-app.put("/todo/update/:id", async (req, res) => {
-  const todo = await Todo.findById(req.params.id);
-
-  todo.text = req.body.text;
-
-  todo.save();
-
-  res.json(todo);
-});
-
-PORT = process.env.PORT || 3001;
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
