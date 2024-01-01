@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import todoRoutes from "./routes/todoRoutes.js";
 import log from "./logger/index.js";
+import corsOptions from "./config/corsOptions.js";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ const app: Express = express();
 
 //middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // routes
 app.use("/api/v1/todo", todoRoutes);
