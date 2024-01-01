@@ -1,5 +1,4 @@
 import mongoose, { ConnectOptions } from "mongoose";
-import log from "../logger/index.js";
 
 const connectDB = async (): Promise<void> => {
   try {
@@ -12,7 +11,7 @@ const connectDB = async (): Promise<void> => {
       useUnifiedTopology: true,
     } as ConnectOptions);
   } catch (error) {
-    log.error(error);
+    console.log(error);
   }
 };
 

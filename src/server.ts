@@ -4,7 +4,6 @@ import connectDB from "./config/dbConn.js";
 import cors from "cors";
 import dotenv from "dotenv";
 import todoRoutes from "./routes/todoRoutes.js";
-import log from "./logger/index.js";
 import corsOptions from "./config/corsOptions.js";
 
 dotenv.config();
@@ -29,5 +28,5 @@ const PORT: string | number = process.env.PORT || 3001;
 
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
-  app.listen(PORT, () => log.info(`Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 });

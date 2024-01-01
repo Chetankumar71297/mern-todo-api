@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Todo from "../models/Todo.js";
-import log from "../logger/index.js";
 
 interface TodoRequest extends Request {
   body: {
@@ -17,7 +16,7 @@ const getAllTodos = async (req: Request, res: Response) => {
 
     res.json(todos);
   } catch (error) {
-    log.error(error);
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -38,7 +37,7 @@ const createNewTodo = async (req: TodoRequest, res: Response) => {
 
     res.json(todo);
   } catch (error) {
-    log.error(error);
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -58,7 +57,7 @@ const updateTodo = async (req: TodoRequest, res: Response) => {
 
     res.json(todo);
   } catch (error) {
-    log.error(error);
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -69,7 +68,7 @@ const deleteTodo = async (req: TodoRequest, res: Response) => {
 
     res.json({ result });
   } catch (error) {
-    log.error(error);
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
